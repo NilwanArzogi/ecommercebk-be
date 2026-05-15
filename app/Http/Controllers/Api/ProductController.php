@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller {
-    // Public: list produk aktif
     public function index(Request $request) {
         $query = Product::where('is_active', true);
 
@@ -22,18 +21,15 @@ class ProductController extends Controller {
         return response()->json($query->latest()->get());
     }
 
-    // Public: detail produk
     public function show($id) {
         $product = Product::findOrFail($id);
         return response()->json($product);
     }
 
-    // Admin: semua produk
     public function adminIndex() {
         return response()->json(Product::latest()->get());
     }
 
-    // Admin: tambah produk
     public function store(Request $request) {
         $request->validate([
             'name'     => 'required|string|max:255',
@@ -61,7 +57,6 @@ class ProductController extends Controller {
         return response()->json($product, 201);
     }
 
-    // Admin: edit produk
     public function update(Request $request, $id) {
         $product = Product::findOrFail($id);
 
@@ -89,7 +84,6 @@ class ProductController extends Controller {
         return response()->json($product);
     }
 
-    // Admin: hapus produk
     public function destroy($id) {
         $product = Product::findOrFail($id);
         if ($product->image) Storage::disk('public')->delete($product->image);

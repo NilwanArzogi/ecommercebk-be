@@ -7,12 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller {
-    // Public: banner aktif
     public function index() {
         return response()->json(Banner::where('is_active', true)->orderBy('order')->get());
     }
 
-    // Admin: semua banner
     public function adminIndex() {
         return response()->json(Banner::orderBy('order')->get());
     }

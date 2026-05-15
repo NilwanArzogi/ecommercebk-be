@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller {
-    // Public: buat pesanan
     public function store(Request $request) {
         $request->validate([
             'customer_name'    => 'required|string',
@@ -60,13 +59,11 @@ class OrderController extends Controller {
         }
     }
 
-    // Admin: lihat semua pesanan
     public function index() {
         $orders = Order::with('items.product')->latest()->get();
         return response()->json($orders);
     }
 
-    // Admin: ubah status pesanan
     public function updateStatus(Request $request, $id) {
         $request->validate(['status' => 'required|in:Menunggu,Diproses,Selesai']);
         $order = Order::findOrFail($id);
@@ -74,7 +71,6 @@ class OrderController extends Controller {
         return response()->json($order);
     }
 
-    // Admin: detail pesanan
     public function show($id) {
         $order = Order::with('items.product')->findOrFail($id);
         return response()->json($order);
