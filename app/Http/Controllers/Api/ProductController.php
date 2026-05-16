@@ -7,23 +7,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller {
+
     public function index(Request $request) {
         $query = Product::where('is_active', true);
-
         if ($request->has('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
-
-        if ($request->has('category')) {
-            $query->where('category', $request->category);
-        }
-
         return response()->json($query->latest()->get());
     }
 
     public function show($id) {
-        $product = Product::findOrFail($id);
-        return response()->json($product);
+        return response()->json(Product::findOrFail($id));
     }
 
     public function adminIndex() {
@@ -32,11 +26,10 @@ class ProductController extends Controller {
 
     public function store(Request $request) {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'price'    => 'required|numeric|min:0',
-            'stock'    => 'required|integer|min:0',
-            'image'    => 'nullable|image|max:2048',
-            'category' => 'nullable|string',
+            'name'  => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|max:2048',
         ]);
 
         $imagePath = null;
